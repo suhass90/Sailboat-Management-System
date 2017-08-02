@@ -1,0 +1,112 @@
+<html>
+<header>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<body>
+<h1> Project 1 </h1>
+ <form action="" id="bal" style="visibility:visible;">
+ <br>
+  Query type:
+  <select name="querytype" style="margin-left: 46px; margin-bottom: 10px;">
+    <option value="2">Retrive</option>
+  <option value="3">Update</option>
+ </select>
+ <br>
+  Boat ID:
+  <input type="text" name="boatid" value="" style="margin-bottom:10px; margin-left:66px;">
+  <br>
+  First name:
+  <input type="text" name="firstname" value="" style="margin-bottom:10px; margin-left:60px;">
+  <br>
+  Last name:
+  <input type="text" name="lastname" value="" style="margin-bottom:10px; margin-left:51px;">
+  <br>
+  Sailboat Type:
+  <select name="stype" style="margin-left: 29px; margin-bottom: 10px;">
+  <option value=""></option>
+  <option value="Catalina">Catalina</option>
+  <option value="Hunter">Hunter</option>
+  <option value="Morgan">Morgan</option>
+ </select>
+  <br>
+  Length: 
+  <input type="text" name="length" value="" style="margin-bottom:10px; margin-left:71px;">
+  <br>
+  Year Built:
+  <input type="text" name="year" value="" style="margin-bottom:10px; margin-left:51px;">
+  <br>
+  Slip Paid: 
+  <input type="radio" name="paid" value="yes" style="margin-left: 59px;margin-bottom:10px;"> Yes
+  <input type="radio" name="paid" value="no"> No
+  <br>
+  Motor Type:
+  <input type="text" name="motortype" value="" style="margin-bottom:10px; margin-left:42px;">
+  <br>
+  Assigned Slip:
+  <input type="text" name="assignedslip" value="" style="margin-bottom:10px; margin-left:30px;">
+  <br>
+  <input type="submit" value="Submit" id="subb" style="margin-top:20px;"> 
+  <input type="button" value="Reset" id="rests" style="margin-left:30px; margin-top:20px;">
+</form>
+<div name="table" id="tableid" style="margin-top:30px; visibility:hidden;">
+<tr>  | Boat Id | </tr>
+<tr> | First Name | </tr>
+<tr> | Last Name | </tr>
+<tr> | Sailboat Type | </tr>
+<tr> | Length | </tr>
+<tr> | Year built | </tr>
+<tr> | Slip Paid | </tr>
+<tr> | Motor Type | </tr>
+<tr> | Assigned Slip | </tr>
+<br>
+<p id="q0"> </p>
+<p id="q1"> </p>
+</div>
+<div id="upsuccess" style="visibility:hidden;">
+<p> Update Successfull</P>
+</div>
+<script>
+$(document).ready(function(){
+
+$("#bal").submit(function(e) {
+
+    var url = "query.php"; //script where you handle the form input
+	var i;
+    $.ajax({
+           type: "POST",
+           url: url,
+		  dataType: 'json',
+           data: $("#bal").serialize(), // serializes the form's elements.
+           success: function(data)
+           {
+		   alert(data);
+		   if(data[0]!="Success")
+		   {
+		   $("#tableid").css("visibility", "visible");
+               for(i=0;i<2;i++) {
+			   $("#q"+i).html(data[i]);
+			   }
+		   // show response from the php script.
+           }
+		   else 		   
+		   {
+		   $("#upsuccess").css("visibility", "visible");
+		   }
+		   }
+		   
+         });
+
+    e.preventDefault(); // avoid to execute the actual submit of the form.
+});
+$("#rests").click(function(e) {
+$("#tableid").css("visibility", "hidden");
+$("#upsuccess").css("visibility", "hidden");
+$('#bal').trigger("reset");
+for(i=0;i<2;i++) {
+			   $("#q"+i).html("");
+			   }
+})
+    });
+</script>
+</body>
+</header>
+</html>
